@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<style type="text/css">
+	@import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
+
+	header {
+	  background-color: #5fb3b3; 
+	  background-position: center top;
+	  background-repeat: no-repeat;
+	  background-size: cover;
+	  line-height: 1.2;
+	  padding: 10vw 2em;
+	  text-align: center;
+	}
+
+	header h1 {
+	  color: white;
+	  font-size: 2.5em;
+	  font-weight: 300;
+	}
+
+	header a {
+	  border: 1px solid #e81c4f;
+	  border-radius: 290486px;
+	  color: white;
+	  font-size: 0.6em;
+	  letter-spacing: 0.2em;
+	  padding: 1em 2em;
+	  text-transform: uppercase;
+	  text-decoration: none;
+	  transition: none 200ms ease-out;
+	  transition-property: color, background;
+	}
+
+	header a:hover {
+	  background:  #f44336;
+	  color: white;
+	}
+
+	body {
+	  margin: 0 auto;
+	  margin-bottom: 50px;
+	  font-family: "Helvetica", "Arial", sans-serif;
+	  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+	  color: #566b78;
+	}
+
+	main {
+		margin: 0 auto;
+		margin-top: 50px;
+		max-width: 50em;
+	}
+
+	h2 {
+	  margin-top: 1em;
+	  padding-top: 1em;
+	}
+
+	h1,
+	h2,
+	strong {
+	  color: #333;
+	}
+
+	a {
+	  color: #e81c4f;
+	  text-decoration: none;
+	}
+
+	code,
+	pre {
+	  background: #f5f7f9;
+	  border-bottom: 1px solid #d8dee9;
+	  color: #000;
+		}
+
+	code {
+	  padding: 2px 4px;
+	  vertical-align: text-bottom;
+	}
+
+	pre {
+	  padding: 1em;
+	  border-left: 2px solid #69c;
+	}
+
+	.param {
+	  color: #e91e63;
+	}
+
+	.variable {
+		color: #5fb3b3;
+	}
+
+	.function {
+		color: #03a9f4;
+	}
+
+	.string {
+		color: #e0b430;
+	}
+
+	.comment {
+		color: #a7adba;
+	}
+</style>
+<body>
+
+<header id="header">
+	<h1> Simple CRUD Operation </h1>
+
+	<p><a href="">Github Repository</a></p>
+</header>
+
+<main>
+	<p>
+		This database library uses <a href="http://php.net/manual/en/book.pdo.php">PDO(PHP Data Objects)</a> to connect and prepared statement to execute database query. In this Database CRUD library there are 4 classes. <a href="#create">Create</a>, <a href="#read">Read</a>, <a href="#update">Update</a> and <a href="#delete">Delete</a>.
+	</p>
+
+	<p>Below is how to use it</p>
+
+	<h2 id="create"> Create </h2>
+
+	<p> The <strong>1st</strong> function in this <strong>CRUD</strong> is the C named <strong>Create</strong>. You will use <strong>Create</strong> to add/insert new data into your database. In order to use it, u must call <code><span class="function">create</span>(<span class="variable">$data</span>, <span class="variable">$table</span>)</code> function </p>
+
+	<p> <strong>Create</strong> function requires <strong>2 parameters</strong> in order for it to work. </p>
+
+<pre>
+<span class="param">@param</span> = <span class="comment">array $data // must be in array format</span>
+<span class="param">@param</span> = <span class="comment">string $table // must be in string format</span>
+</pre>
+
+	<p> You must <strong>specify</strong> which <strong>column</strong> and what <strong>data</strong> you want to be inserted in array <span class="variable">$data</span> while in string <span class="variable">$table</span>, you must specify the <strong>table name</strong> that contains the <strong>column</strong> u specify in array <span class="variable">$data</span> </p>
+
+	<p> Pass these 2 parameter into <code><span class="function">create</span>()</code> function in order for it to work properly.
+
+<pre>
+<span class="variable">$data</span> = <span class="function">array</span>(<span class="string">'column1'</span> <span class="param">=></span> <span class="string">'data1'</span>);
+<span class="variable">$table</span> = <span class="string">'test'</span>; <span class="comment">// this is table name</span>
+
+<span class="function">create</span>(<span class="variable">$data</span>, <span class="variable">$table</span>); <span class="comment">// this will create new row in database</span>
+</pre>
+
+	<p> Or you can also pass the array or string directly into the function like so.
+
+<pre>
+<span class="function">create</span>(<span class="function">array</span>(<span class="string">'column1'</span> <span class="param">=></span> <span class="string">'data1'</span>), <span class="string">'test'</span>); <span class="comment">// this will create new row in database</span>
+</pre>
+
+	<p> both way will work and the generated query will be <code><span class="param">INSERT INTO</span> <span class="string">'test'</span>(<span class="string">column1'</span>) <span class="param">VALUES</span> (<span class="string">'data1'</span>);</code>
+
+	<h2 id="read"> Read </h2>
+
+	<p> The <strong>2nd</strong> function is the R named <strong>Read</strong>. You use <strong>Read</strong> to get data from database and display it in your html or view. Call <code><span class="function">read</span>(<span class="variable">$data</span>, <span class="variable">$table</span>)</code> in order to use it.
+
+	<p> <strong>Read</strong> function also requires <strong>2 parameters</strong> in order for it to work</p>
+
+<pre>
+<span class="param">@param</span> = <span class="comment">array $data // must be in array format</span>
+<span class="param">@param</span> = <span class="comment">string $table // must be in string format</span>
+</pre>
+
+	<p> As you can see, the Read parameters require exact same data type as Create </p>
+
+	<p> But <strong>in Read</strong> you dont need to specify what data u want to read, <strong>only column</strong>. You can also <strong>specify 1 more thing</strong> in <span class="variable">$data</span> which is a <strong>where clause</strong> in database query. That way you can choose to read all data or only specific data from your database table </p>
+
+	<p> to add a where clause, u must add <code><span class="string">'Where'</span> <span class="param">=></span> <span class="string">'column name'</span> = <span class="string">'data'</span></code> into the last part of array <span class="variable">$data</span>
+
+	<p> Pass these 2 parameter into <code><span class="function">read</span>()</code> and then call it to use it. </p>
+
+<pre>
+<span class="variable">$data</span> = <span class="function">array</span>(
+	<span class="string">'column1'</span>, <span class="comment">// use * if u want to read all data</span>
+	<span class="string">'WHERE'</span> <span class="param">=></span> <span class="string">'id'</span> = <span class="string">'1'</span>); <span class="comment">// this is not required</span>
+<span class="variable">$table</span> = <span class="string">'test'</span>; <span class="comment">// this is table name</span>
+
+<span class="function">read</span>(<span class="variable">$data</span>, <span class="variable">$table</span>); <span class="comment">// this will read column1 data from row id = 1</span>
+</pre>
+
+	<p> or do it the 2nd way </p>
+
+<pre>
+<span class="function">read</span>(<span class="string">'column1'</span>, <span class="string">'WHERE'</span> <span class="param">=></span> <span class="string">'id'</span> = <span class="string">'1'</span>, <span class="string">'test'</span>); <span class="comment">// this will read column1 data from row id = 1</span>
+</pre>
+
+	<p> The generated query will be <code><span class="param">SELECT</span> <span class="string">'column1'</span> <span class="param">FROM</span> <span class="string">'test'</span>;</code></p>
+
+	<h2 id="update"> Update </h2>
+
+	<p> The <strong>3rd</strong> one is the U derived from <strong>Update</strong>. This is the function you will be using to update your old data in your database to a new one. Call <code><span class="function">update</span>(<span class="variable">$data</span>, <span class="variable">$id</span>, <span class="variable">$table</span>)</code> in order to use it. </p>
+
+	<p> <strong>Update</strong> function is abit different. It requires <strong>3 parameters</strong> in order for it to work</p>
+
+<pre>
+<span class="param">@param</span> = <span class="comment">array $data // must be in array format</span>
+<span class="param">@param</span> = <span class="comment">string $id // must be in string or integer format</span>
+<span class="param">@param</span> = <span class="comment">string $table // must be in string format</span>
+</pre>
+
+	<p> <strong>Update</strong> require <strong>3</strong> parameters because u will have to specify which row u want to be updated or else all row will be affected. </p>
+
+	<p> pass all 3 paremeters like so. </p>
+
+<pre>
+<span class="variable">$data</span> = <span class="function">array</span>(<span class="string">'column1'</span> <span class="param">=></span> <span class="string">'data1'</span>); <span class="comment">// SET column1 to data1</span>
+<span class="variable">$id</span> = <span class="string">'1'</span>; <span class="comment">// this is id in where clause</span>
+<span class="variable">$table</span> = <span class="string">'test'</span>; <span class="comment">// this is table name</span>
+
+<span class="function">update</span>(<span class="variable">$data</span>, <span class="variable">$id</span>, <span class="variable">$table</span>); <span class="comment">// this will update row 1 column1 old data to data1</span>
+</pre>
+
+	<p> Or you can also pass the array or string directly into the function like so.
+
+<pre>
+<span class="function">update</span>(<span class="function">array</span>(<span class="string">'column1'</span> <span class="param">=></span> <span class="string">'data1'</span>), <span class="string">'1'</span>, <span class="string">'test'</span>); <span class="comment">// this will update row 1 column1 old data to data1</span>
+</pre>
+
+	<p> The query for this function will be <code><span class="param">UPDATE</span> <span class="string">'test'</span> <span class="param">SET</span> <span class="string">'column1'</span> = <span class="string">'data1'</span> <span class="param">WHERE</span> <span class="string">'id'</span> = <span class="string">'1'</span>;</code></p>
+
+	<h2 id="delete"> Delete </h2>
+
+	<p> This is Delete,the last function of CRUD. You use this to delete any row from any table in your database</p>
+
+	<p> <strong>Delete</strong> function also requires <strong>2 parameters</strong> like Create and Read. but one of the parameter is different.</p>
+
+<pre>
+<span class="param">@param</span> = <span class="comment">string $id // must be in string or integer format</span>
+<span class="param">@param</span> = <span class="comment">string $table // must be in string format</span>
+</pre>
+
+	<p> Delete function is abit simple because it doesnt require array variables. </p>
+
+<pre>
+<span class="variable">$id</span> = <span class="string">'1'</span>;
+<span class="variable">$table</span> = <span class="string">'test'</span>; <span class="comment">// this is table name</span>
+
+<span class="function">delete</span>(<span class="variable">$data</span>, <span class="variable">$table</span>); <span class="comment">// this will delete row with an id of 1 in table test</span>
+</pre>
+
+	<p> just like the other function, Delete also able to use a straightforward way as this. </p>
+
+<pre>
+<span class="function">delete</span>(<span class="string">'1'</span>, <span class="string">'test'</span>); <span class="comment">// this will delete row with an id of 1 in table test</span>
+</pre>
+
+	<p> The generated query will be <code><span class="param">Delete FROM</span> <span class="string">'test'</span> <span class="param">WHERE</span> id = <span class="string">'1'</span>;</code></p>
+</main>
+
+</body>
+</html>
