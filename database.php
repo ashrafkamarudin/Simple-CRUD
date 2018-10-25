@@ -1,25 +1,17 @@
 <?php
 
-/*
-* Database Settings
-*/
-
-define('DB_TYPE', 'mysql');
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'busticket');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-
 /**
 * Class Database
 * handle database connection and simple CRUD operation
 */
 class Database
 {
-	
+	private $e;
+
 	function __construct()
 	{
         $this->pdo = new PDO(DB_TYPE.':host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASS);
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     /**
@@ -35,14 +27,17 @@ class Database
 		$values  = array_values($data);
 		$qs      = str_repeat("?,",count($values)-1);
 
-    	try
-    	{
+    	try {
     		$stmt = $this->pdo->prepare("INSERT INTO $table ($columns) VALUES(${qs}?)");
     		if ($stmt->execute($values)) {	
-    			return true;
+    			return $stmt;
     		};
     	} catch(PDOException $e) {
-    		echo $e->getMessage(); 
+
+    		console_write('\n\n[ COLUMN : DATA ]\n');
+    		console_write($data);
+    		console_write('Query String\n\n ' . $stmt->queryString);
+    		console_write('Exception Message\n\n' . $e->getMessage());
 		}
 		return false;
 	}
@@ -68,11 +63,20 @@ class Database
 			$query = "SELECT $columns FROM $table";
 		}
 
-		$stmt = $this->pdo->prepare($query);
-		if ($stmt->execute()) {
-			$data=$stmt->fetchAll(PDO::FETCH_ASSOC);
-			return $data;
-		};
+		try {
+			$stmt = $this->pdo->prepare($query);
+			if ($stmt->execute()) {
+				$data=$stmt->fetchAll(PDO::FETCH_ASSOC);
+				return $data;
+			};
+    	} catch(PDOException $e) {
+
+    		console_write('\n\n[ COLUMN : DATA ]\n');
+    		console_write($data);
+    		console_write('Query String\n\n ' . $stmt->queryString);
+    		console_write('Exception Message\n\n' . $e->getMessage());
+		}
+
 		return false;
 	}
 
@@ -81,7 +85,7 @@ class Database
 	* @param int/string $id
 	* @param string $table
 	*/
-	public function getID($id, $table)
+	public function getById($id, $table)
 	{
 		if (strpos($id, '=') == false) {
 			    $stmt = $this->pdo->prepare("SELECT * FROM $table WHERE id=:id");
@@ -134,11 +138,18 @@ class Database
 			}
 			$stmt = $this->pdo->prepare($query);
 
+			console_write($values);
+			console_write($id);
+			console_write($stmt->queryString);
+
 			if ($stmt->execute($values)) {
 				return true; 
 			}
 		} catch(PDOException $e) {
-			echo $e->getMessage(); 
+			console_write('\n\n[ COLUMN : DATA ]\n');
+    		console_write($data);
+    		console_write('Query String\n\n ' . $stmt->queryString);
+    		console_write('Exception Message\n\n' . $e->getMessage());
 		}
 		return false;
 	}
@@ -181,10 +192,14 @@ class Database
     {
         if (!$args)
         {
-             return $this->pdo->query($sql);
+            return $this->pdo->query($sql);
         }
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($args);
         return $stmt;
+    }
+
+    public function lastInsertId(){
+        return $this->pdo->lastInsertId();
     }
 }
